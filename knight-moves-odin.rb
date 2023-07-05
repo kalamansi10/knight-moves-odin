@@ -9,7 +9,9 @@ class Board
     attr_accessor :start
     def knight_moves(position, destination)
         @start = Knight.new(position)
-        possible_moves(@start, destination, ['start'], [64])
+        result = possible_moves(@start, destination, ['start'], [64, nil, nil])
+        p result[1]
+        p "This took #{result[2]} steps."
     end
     def possible_moves(node, destination, been_at, steps)
         position = node.position
@@ -17,9 +19,8 @@ class Board
         if position == destination || been_at.any?(position)
             if position == destination && [*been_at, position].length <= steps[0]
                 steps[0] = [*been_at, position].length 
-                p '-----------'
-                p [*been_at, position, 'end']
-                p "This took #{[*been_at].length - 1} steps."
+                steps[1] = [*been_at, position, 'end']
+                steps[2] = [*been_at].length - 1
             end
             return node
         end
@@ -31,7 +32,7 @@ class Board
         node.ddr = possible_moves(Knight.new(move[:ddr]), destination, [*been_at, position], steps) unless !move[:ddr] || [*been_at, position].length > steps[0]
         node.urr = possible_moves(Knight.new(move[:urr]), destination, [*been_at, position], steps) unless !move[:urr] || [*been_at, position].length > steps[0]
         node.drr = possible_moves(Knight.new(move[:drr]), destination, [*been_at, position], steps) unless !move[:drr] || [*been_at, position].length > steps[0]
-        node
+        steps
     end
         
     def next_move(position)
@@ -48,5 +49,5 @@ class Board
 end
 
 game = Board.new
-game.knight_moves([1, 1], [1, 8])
+game.knight_moves([3, 3], [4, 3])
 
