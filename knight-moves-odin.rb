@@ -19,7 +19,7 @@ class Board
                 steps[0] = [*been_at, position].length 
                 p '-----------'
                 p [*been_at, position, 'end']
-                p [*been_at].length
+                p "This took #{[*been_at].length - 1} steps."
             end
             return node
         end
